@@ -1,0 +1,14 @@
+{
+  "name": "appinitr",
+  "version": "1.0.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bolawijen/appinitr"
+  },
+  "bin": {
+    "appinitr": "bin.js"
+  },
+  "dependencies": {
+    "@yus-ham/tiged": "^2.12.8"
+  }
+}
