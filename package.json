@@ -1,6 +1,6 @@
 {
   "name": "appinitr",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bolawijen/appinitr"
@@ -9,6 +9,6 @@
     "appinitr": "bin.js"
   },
   "dependencies": {
-    "@yus-ham/tiged": "^2.12.8"
+    "@yus-ham/tiged": "^2"
   }
 }
