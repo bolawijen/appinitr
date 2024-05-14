@@ -28,7 +28,7 @@ try {
 
     console.info('Downloading project into directory:', dest)
 
-    await tiged(process.argv[2], {force: argv.force}).clone(dest)
+    await tiged(process.argv[2], {force: argv.force, keepVcs: true}).clone(dest)
 
     const app_package_json = await import(`${dest}/package.json`)
 
