@@ -51,19 +51,29 @@ try {
     await tiger.clone(dest)
     console.info('')
 
-    await import(`${dest}/package.json`).then(() => {
-        const { promise, resolve } = Promise.withResolvers()
-        const commands = ['bun', 'install']
+    import(`${dest}/package.json`).then(async (pkg_meta) => {
+        const { promise, resolve: onExit } = Promise.withResolvers()
+        const commands = ['bun', 'install', '--ignore-scripts']
         options.production && commands.push('-p')
 
         console.info(styleText('magenta', styleText('bold', '$')), ...commands)
         Bun.spawn(commands, {
             stdout: 'inherit',
             stdin: 'inherit',
-            onExit: resolve,
             cwd: dest,
+            onExit,
         })
-        return promise
+        await promise
+
+        // workaround to https://github.com/oven-sh/bun/issues/11077
+        // postinstall need to be run separately
+        if (pkg_meta.scripts.postinstall) {
+            Bun.spawn(pkg_meta.scripts.postinstall.split(' '), {
+                stdout: 'inherit',
+                stdin: 'inherit',
+                cwd: dest,
+            })
+        }
     })
     .catch((err) => {
         console.info(styleText('yellow', 'No package.json found, skip deps installs'))
