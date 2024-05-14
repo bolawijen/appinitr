@@ -2,7 +2,7 @@
 
 import tiged from "@yus-ham/tiged";
 import { resolve, basename } from "path";
-import { parseArgs } from "util";
+import { parseArgs, styleText } from "util";
 
 
 const { values: options, positionals: argv } = parseArgs({ args: Bun.argv, strict: false })
@@ -33,13 +33,30 @@ if (options.help || !argv[2]) {
 
 try {
     const dest = resolve(argv[3] || basename(argv[2] || ''))
+    const package_json = await import('./package.json')
 
+    console.info(styleText('cyan', styleText('bold', `\n  AppInitr ${package_json.version} `) + '- Download and install git project\n'))
     console.info('Downloading project into directory:', dest)
+
+    const tiger = tiged(argv[2], {force: options.force, keepVcs: true, mode: 'git'})
+
+    tiger.on('warn', (err) => {
+        console.info(styleText('yellow', err.message), '\n')
+    })
+
+    tiger.on('info', (info) => {
+        console.info(styleText('cyanBright', `${info.message}\n`))
+    })
+
+    await tiger.clone(dest)
+    console.info('')
 
     await import(`${dest}/package.json`).then(() => {
         const { promise, resolve } = Promise.withResolvers()
         const commands = ['bun', 'install']
         options.production && commands.push('-p')
+
+        console.info(styleText('magenta', styleText('bold', '$')), ...commands)
         Bun.spawn(commands, {
             stdout: 'inherit',
             stdin: 'inherit',
@@ -49,8 +66,9 @@ try {
         return promise
     })
     .catch((err) => {
+        console.info(styleText('yellow', 'No package.json found, skip deps installs'))
     })
 } catch(err) {
-    console.error('Failed:')
+    console.error('\nFailed:')
     console.info('  '+ err.message.replace('Use options.force', 'Use --force') +'\n')
 }
