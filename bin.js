@@ -68,7 +68,12 @@ try {
         // workaround to https://github.com/oven-sh/bun/issues/11077
         // postinstall need to be run separately
         if (pkg_meta.scripts.postinstall) {
-            Bun.spawn(pkg_meta.scripts.postinstall.split(' '), {
+            commands.splice(0)
+            commands.push(...pkg_meta.scripts.postinstall.split(' '))
+            console.info(styleText('magenta', styleText('bold', '$')), ...commands)
+
+            Bun.spawn(commands, {
+                env: {...Bun.env, BUN_ENV: options.production && 'production'},
                 stdout: 'inherit',
                 stdin: 'inherit',
                 cwd: dest,
