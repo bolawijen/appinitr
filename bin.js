@@ -1,6 +1,7 @@
 #!/bin/env bun
 
 import tiged from "@yus-ham/tiged";
+import pkg_json from "./package.json";
 import { resolve, basename } from "path";
 import { parseArgs, styleText } from "util";
 
@@ -15,7 +16,10 @@ Object.entries({
 })
 .forEach(([alias, opt]) => options[alias] && (options[opt] = true))
 
+const header = styleText('cyan', styleText('bold', `\n  AppInitr ${pkg_json.version} `) + '- Clone and install javascript project from any git source\n')
+
 if (options.help || !argv[2]) {
+    console.info(header)
     console.info(
         'Usage:\n' +
         '  appinitr <source> [<directory>] [<options>]\n\n' +
@@ -33,9 +37,8 @@ if (options.help || !argv[2]) {
 
 try {
     const dest = resolve(argv[3] || basename(argv[2] || ''))
-    const package_json = await import('./package.json')
 
-    console.info(styleText('cyan', styleText('bold', `\n  AppInitr ${package_json.version} `) + '- Clone and install javascript project from any git source\n'))
+    console.info(header)
     console.info('Downloading project into directory:', dest)
 
     const tiger = tiged(argv[2], {force: options.force, keepVcs: true, mode: 'git'})
