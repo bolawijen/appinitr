@@ -1,12 +1,12 @@
 {
-  "name": "appinitr",
-  "version": "1.0.7",
+  "name": "maintenis",
+  "version": "0.0.1-dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bolawijen/appinitr"
+    "url": "git+https://github.com/bolawijen/maintenis.git"
   },
   "bin": {
-    "appinitr": "bin.js"
+    "maintenis": "bin.js"
   },
   "dependencies": {
     "@yus-ham/tiged": "^2"

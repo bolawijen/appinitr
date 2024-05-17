@@ -16,13 +16,13 @@ Object.entries({
 })
 .forEach(([alias, opt]) => options[alias] && (options[opt] = true))
 
-const header = styleText('cyan', styleText('bold', `\n  AppInitr ${pkg_json.version} `) + '- Clone and install javascript project from any git source\n')
+const header = styleText('cyan', styleText('bold', `\n  MainTenis ${pkg_json.version} `) + '- Clone and install javascript project from any git source\n')
 
 if (options.help || !argv[2]) {
     console.info(header)
     console.info(
         'Usage:\n' +
-        '  appinitr <source> [<directory>] [<options>]\n\n' +
+        '  maintenis <source> [<directory>] [<options>]\n\n' +
         '  Source: project source which can be\n' +
         '    - user/repo   Github repository path\n' +
         '    - git url     Any git url\n\n' +
